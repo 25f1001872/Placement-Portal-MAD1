@@ -62,3 +62,5 @@ The application follows a modular Flask structure with separate routes, models, 
 
 This project is developed for academic submission as per course guidelines.  
 All business logic and implementation are written independently in compliance with plagiarism and AI usage policies.
+
+Initial repository setup completed.
