@@ -29,5 +29,11 @@ def create_app():
             db.session.add(admin)
             db.session.commit()
 
+        from .routes import admin_bp, auth_bp, company_bp, student_bp    
+        app.register_blueprint(admin_bp)
+        app.register_blueprint(auth_bp)
+        app.register_blueprint(company_bp)
+        app.register_blueprint(student_bp)
+
     return app
 
