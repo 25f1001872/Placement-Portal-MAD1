@@ -2,6 +2,9 @@ from flask import Blueprint, redirect, render_template, url_for
 from app.models.company import CompanyProfile
 from .. import db
 from app.models.user import User
+from app.models.student import StudentProfile
+from app.models.placement_drive import PlacementDrive
+from app.models.application import Application
 admin_bp = Blueprint('admin', __name__)
 
 @admin_bp.route('/admin/dashboard')
@@ -10,7 +13,7 @@ def admin_dashboard():
     total_students = User.query.filter_by(role = 'student').count()
     pending_approval = CompanyProfile.query.filter_by(approval_status = 'Pending').count()
     companies = CompanyProfile.query.all()
-    students = User.query.filter_by(role = 'student').all()
+    students = StudentProfile.query.all()
     pending_companies = CompanyProfile.query.filter_by(approval_status = 'Pending').all()
     return render_template('admin/dashboard.html', 
                            total_companies = total_companies, 
@@ -21,8 +24,7 @@ def admin_dashboard():
                            pending_companies = pending_companies)
 
 
-
-@admin_bp.route('/admin/approve_company/<int:id>')
+@admin_bp.route('/admin/approve_company/<int:id>', methods = ['POST'])
 def approve_company(id):
     company_profile = CompanyProfile.query.get(id)
 
@@ -34,4 +36,69 @@ def approve_company(id):
 
     return redirect(url_for('admin.admin_dashboard'))
 
+@admin_bp.route('/admin/company_profile/<int:id>')
+def company_profile(id):
+    company_profile = CompanyProfile.query.get(id)
+    if not company_profile:
+        return "Company not found", 404
     
+    return render_template('admin/company_profile.html', company_profile = company_profile)
+
+@admin_bp.route('/admin/blacklist_company/<int:id>', methods = ['POST'])
+def blacklist_company(id):
+    company_profile = CompanyProfile.query.get(id)
+
+    if not company_profile:
+        return "Company not found", 404
+    
+    company_profile.is_blacklisted = True
+    db.session.commit()
+
+    return redirect(url_for('admin.admin_dashboard'))
+
+@admin_bp.route('/admin/blacklist_student/<int:id>', methods = ['POST'])
+def blacklist_student(id):
+    student = StudentProfile.query.get(id)
+
+    if not student:
+        return "User not found", 404
+    
+    student.is_blacklisted = True
+    db.session.commit()
+
+    return redirect(url_for('admin.admin_dashboard'))
+
+@admin_bp.route('/admin/student_profile/<int:id>')
+def student_profile(id):
+    student = StudentProfile.query.get(id)
+
+    if not student:
+        return "User not found", 404
+    
+    return render_template('admin/student_profile.html', student = student)
+
+@admin_bp.route('/admin/drive_details/<int:id>')
+def drive_details(id):
+    drive = PlacementDrive.query.get(id)
+
+    if not drive:
+        return "Drive not Found", 404
+    
+    return render_template('admin/drive_details.html', drive = drive)
+
+@admin_bp.route('/admin/drive_completed/<int:id>', methods = ['POST'])
+def drive_completed(id):
+    drive = PlacementDrive.query.get(id)
+
+    if not drive:
+        return "Drive not Found", 404
+    
+    drive.status = 'Completed'
+    db.session.commit()
+
+    return redirect(url_for('admin.admin_dashboard'))
+
+@admin_bp.route('/admin/student_applications/<int:id>')
+def student_applications(id):
+    student_applications = Application.query.filter_by(student_id=id).all()
+    return render_template('admin/student_applications.html', applications = student_applications)

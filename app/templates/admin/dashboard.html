@@ -1,23 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Admin Dashboard</title>
+    <style>
+        #form{
+            width: 400px;
+            height: 500px;
+            margin-top: 100px;
+        }
+    </style>
 </head>
 <body>
-    <tr>
-    <td>{{ company.id }}</td>
-    <td>{{ company.company_name }}</td>
-    <td>{{ company.approval_status }}</td>
+            <nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-text-top">
+      Placement Portal
+      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-navbar-right">
+    </a>
+  </div>
+</nav>
+    <div id = "main" style=" height: 1100px;">
+        <div id = "canvas" style="height: 1100px;">
+            <nav class="navbar navbar-light mb-2" style="background-color: #6db2c7;">
+        <div class="container-fluid">
+        <a class="navbar-brand">Welcome Admin</a>
+        <form class="d-flex">
+           <input class="form-control me-2" type="search" placeholder="Student ID, Organization ID..." aria-label="Search" style="width: 300px;">
+           <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+        </div>
+        </nav>
+        <div class="row mb-3">
 
-    <td>
-{% if company.approval_status == "Approved" %}
-<a href="{{ url_for('admin.approve_company', id=company.id) }}">
-    <button>Approve</button>
-</a>
-{% endif %}
-    </td>
+<div class="col">
+<b>Total Companies:</b> {{ total_companies }}
+</div>
+
+<div class="col">
+<b>Total Students:</b> {{ total_students }}
+</div>
+
+</div>
+        <div style="text-align: left; margin-bottom: 10px;">
+        <h3 style="display: inline; ">Registered Companies</h3>
+        </div>
+        <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;margin-bottom: 10px;">
+
+           {% for company in companies %}
+            <div style="border: black solid 1px; height: 70px; border-radius: 5px; margin-bottom: 3px; padding:5px;">
+
+              <b>{{ company.company_name }}</b>
+
+               <form method="POST" action="{{ url_for('admin.blacklist_company', id=company.id) }}">
+                  <button class="btn btn-outline-danger float-end">Blacklist</button>
+               </form>
+
+             </div>
+           {% endfor %}
+         </div>
+        <div style="text-align: left; margin-bottom: 10px;">
+        <h3 style="display: inline; ">Registered Students</h3>
+        </div>
+        <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;margin-bottom: 10px;">
+
+         {% for student in students %}
+         <div style="border: black solid 1px; padding: 3px; height: 70px; border-radius: 5px; margin-bottom: 3px;">
+
+             <b>{{ student.student_name }}</b>
+
+             <form method="POST" action="{{ url_for('admin.blacklist_student', id=student.id) }}">
+        <button class="btn btn-outline-danger float-end">Blacklist</button>
+             </form>
+
+         </div>
+         {% endfor %}
+
+         </div>
+        <div style="text-align: left; margin-bottom: 10px;">
+        <h3 style="display: inline; ">Companies Applications</h3>
+        </div>
+<div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;margin-bottom: 10px;">
+
+{% for company in pending_companies %}
+<div style="border: black solid 1px; padding: 3px; height: 70px; border-radius: 5px; margin-bottom: 3px;">
+
+    <b>{{ company.company_name }}</b>
+
+    <form method="POST" action="{{ url_for('admin.approve_company', id=company.id) }}">
+        <button class="btn btn-outline-success float-end">Approve</button>
+    </form>
+
+</div>
+{% endfor %}
+
+</div>        
+        <div style="text-align: left; margin-bottom: 10px; ">
+          <h3>Ongoing Drives</h3>
+          <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;">
+            <table class="table text-center" style="border: 1px solid black;">
+              <thead>
+                <tr>
+                  <th scope="col">Drive ID</th>
+                  <th scope="col">Company ID</th>
+                  <th scope="col">Job Title</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+{% for drive in drives %}
+<tr>
+  <th scope="row">{{ drive.id }}</th>
+  <td>{{ drive.company_id }}</td>
+  <td>{{ drive.job_title }}</td>
+  <td>{{ drive.deadline }}</td>
+
+  <td>
+
+    <a href="{{ url_for('admin.drive_details', id=drive.id) }}" class="btn btn-outline-dark">
+    View Details
+    </a>
+
+    <a href="{{ url_for('admin.drive_completed', id=drive.id) }}" class="btn btn-outline-success">
+    Mark Complete
+    </a>
+
+  </td>
+
 </tr>
+{% endfor %}
+
+</tbody>
+            </table>  
+          </div>
+        </div>
+<div style="text-align: left; margin-bottom: 10px; ">
+          <h3>Student Applications</h3>
+          <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;">
+            <table class="table text-center" style="border: 1px solid black;">
+              <thead>
+                <tr>
+                  <th scope="col">Student Name</th>
+                  <th scope="col">student_id</th>
+                  <th scope="col">drive_id</th>
+                  <th scope="col">Company Name</th>
+                  <th scope="col">Actions</th>
+
+                </tr>
+              </thead>
+              <tbody>
+
+{% for app in applications %}
+
+<tr>
+  <td>{{ app.student_id }}</td>
+  <td>{{ app.student_id }}</td>
+  <td>{{ app.drive_id }}</td>
+  <td>{{ app.company_id }}</td>
+
+  <td>
+    <a href="{{ url_for('admin.student_applications', id=app.student_id) }}" class="btn btn-outline-primary">
+    View
+    </a>
+  </td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+            </table>  
+          </div>
+        </div>        
+    </div>
+    
 </body>
 </html>

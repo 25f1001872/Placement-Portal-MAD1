@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, session, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
-
+from app.models.student import StudentProfile
 from app.models.company import CompanyProfile
 from .. import db
 from app.models.user import User
@@ -22,7 +22,8 @@ def login():
         password = request.form.get('password')
 
         user  = User.query.filter_by(email = email).first()
-        company = CompanyProfile.query.filter_by(user_id = user.id).first()
+        if user:
+            company = CompanyProfile.query.filter_by(user_id = user.id).first()
         if user and check_password_hash(user.password_hash, password):
             
             session['user_id'] = user.id
@@ -30,15 +31,15 @@ def login():
             session['role'] = user.role
 
             if user.role == 'admin':
-                return redirect(url_for('admin.dashboard'))
+                return redirect(url_for('admin.admin_dashboard'))
             
             elif user.role == 'company':
-                if company.approved_status == 'Pending':
+                if company.approval_status == 'Pending':
                     return render_template('login.html', error = 'Your account approval is pending by admin.')
-                return redirect(url_for('company.dashboard'))
+                return redirect(url_for('company.company_dashboard'))
             
             elif user.role == 'student':
-                return redirect(url_for('student.dashboard'))
+                return redirect(url_for('student.student_dashboard'))
         
         else:
             return render_template('login.html', error = 'Invalid Credentials')
@@ -47,7 +48,7 @@ def login():
 @auth_bp.route('/logout')
 def logout():
     session.clear()
-    return render_template('logout.html')
+    return render_template('auth.home')
 
 @auth_bp.route('/register/student', methods=['GET', 'POST'])
 def register_student():
@@ -67,6 +68,9 @@ def register_student():
             new_user = User(name = name, email = email, password_hash = generate_password_hash(password), role = 'student')
             db.session.add(new_user)
             db.session.commit()
+            new_student_profile = StudentProfile(user_id = new_user.id, student_name = name, education = '', skills = '', resume_path = '')
+            db.session.add(new_student_profile)
+            db.session.commit()
             return render_template('login.html', message = 'Registration successful. Please login.')
 
 @auth_bp.route('/register/company', methods  = ['GET', 'POST'])
@@ -78,6 +82,7 @@ def register_company():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
+        company_description = request.form.get('company_description')
 
         existing_user = User.query.filter_by(email = email).first()
             
@@ -89,7 +94,7 @@ def register_company():
             new_user = User(name = name, email = email, password_hash = generate_password_hash(password), role = 'company')
             db.session.add(new_user)
             db.session.commit()
-            new_company_profile = CompanyProfile(user_id = new_user.id, company_name = name, approval_status = 'Pending')
+            new_company_profile = CompanyProfile(user_id = new_user.id, company_name = name, company_description = company_description, approval_status = 'Pending')
             db.session.add(new_company_profile)
             db.session.commit()
             company = CompanyProfile.query.filter_by(user_id = new_user.id).first()
