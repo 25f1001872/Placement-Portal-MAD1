@@ -4,6 +4,9 @@ from app.models.student import StudentProfile
 from app.models.company import CompanyProfile
 from .. import db
 from app.models.user import User
+from werkzeug.utils import secure_filename
+import os
+
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -59,6 +62,7 @@ def register_student():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
+        resume = request.form.get('resume')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
@@ -71,6 +75,14 @@ def register_student():
             new_student_profile = StudentProfile(user_id = new_user.id, student_name = name, education = '', skills = '', resume_path = '')
             db.session.add(new_student_profile)
             db.session.commit()
+
+            if resume:
+                new_filename = f"student_{new_student_profile.id}_resume.pdf"
+                resume_path = os.path.join('app', 'static', 'models', 'resumes', new_filename)
+                resume.save(resume_path)
+                new_student_profile.resume_path = f"uploads/resumes/{new_filename}"
+                db.session.commit()
+
             return render_template('login.html', message = 'Registration successful. Please login.')
 
 @auth_bp.route('/register/company', methods  = ['GET', 'POST'])

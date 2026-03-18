@@ -26,7 +26,7 @@
         <div id = "canvas">
             <div id="form" >
           <h2>Register Form</h2><br>
-          <form method="POST" action="{{ url_for('auth.register_student') }}">
+          <form method="POST" action="{{ url_for('auth.register_student') }}" enctype="multipart/form-data">
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
               <input
@@ -46,6 +46,9 @@
               <input type="password" class="form-control" id="password" name="password" />
             </div>
             <br>
+            <div class="mb-2"> 
+              <label for="resume" class="form-label">Upload Resume (PDF)</label>
+              <input type="file" name="resume" accept=".pdf" required> </div>
             <div class="text-center">
               <input
                 type="submit"
