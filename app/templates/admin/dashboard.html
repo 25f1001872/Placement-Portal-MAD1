@@ -104,7 +104,7 @@
               <thead>
                 <tr>
                   <th scope="col">Drive ID</th>
-                  <th scope="col">Company ID</th>
+                  <th scope="col">Company Name</th>
                   <th scope="col">Job Title</th>
                   <th scope="col">Deadline</th>
                   <th scope="col">Actions</th>
@@ -115,7 +115,7 @@
 {% for drive in drives %}
 <tr>
   <th scope="row">{{ drive.id }}</th>
-  <td>{{ drive.company_id }}</td>
+  <td>{{ drive.company_name }}</td>
   <td>{{ drive.job_title }}</td>
   <td>{{ drive.deadline }}</td>
 
@@ -125,9 +125,9 @@
     View Details
     </a>
 
-    <a href="{{ url_for('admin.drive_completed', id=drive.id) }}" class="btn btn-outline-success">
-    Mark Complete
-    </a>
+    <form action="{{ url_for('admin.drive_status', drive_id=drive.id) }}" method="POST" style="display:inline;">
+      <button class="btn btn-success btn-sm">Mark Complete</button>
+    </form>
 
   </td>
 

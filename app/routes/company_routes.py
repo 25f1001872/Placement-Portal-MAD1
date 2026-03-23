@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from flask import Blueprint, redirect, render_template, request, url_for, session
 
 from app.models.application import Application
@@ -14,7 +16,7 @@ def company_dashboard():
     company_id = company_profile.id
     upcoming_drives = PlacementDrive.query.filter_by(company_id = company_id, status = 'Active').all()
     closed_drives = PlacementDrive.query.filter_by(company_id = company_id, status = 'Closed').all()
-    return render_template('company/dashboard.html', company_id = company_id, upcoming_drives = upcoming_drives, closed_drives = closed_drives)
+    return render_template('company/dashboard.html', company_id = company_id, upcoming_drives = upcoming_drives, closed_drives = closed_drives, company_profile = company_profile)
 
 @company_bp.route('/company/drive_applications/<int:drive_id>')
 def drive_applications(drive_id):
@@ -23,9 +25,8 @@ def drive_applications(drive_id):
     drive = PlacementDrive.query.get(drive_id)
     if drive.company_id != company_profile.id:
          return "unauthorised access", 403
-    
     student_applications = Application.query.filter_by(drive_id = drive_id).all()
-    return render_template('company/drive_applications.html', student_applications = student_applications)
+    return render_template('company/drive_applications.html', student_applications = student_applications, company_profile = company_profile, drive = drive)
 
 @company_bp.route('/company/student_application/<int:application_id>')
 def student_application(application_id):
@@ -37,7 +38,7 @@ def student_application(application_id):
         return "unauthorised access", 403
 
     student = StudentProfile.query.get(student_application.student_id)
-    return render_template('company/student_application.html', student_application = student_application, student = student, drive = drive)
+    return render_template('company/student_application.html', student_application = student_application, student = student, drive = drive, company_profile = company_profile)
 
 @company_bp.route('/company/student_application/<int:application_id>/update_status', methods = ['POST'])
 def update_student_application_status(application_id):
@@ -71,6 +72,9 @@ def create_drive():
         job_description = request.form.get('job_description')
         Eligibility_criteria = request.form.get('eligibility_criteria')
         Application_deadline = request.form.get('application_deadline')
+
+        if Application_deadline:
+            Application_deadline = datetime.strptime(Application_deadline, "%Y-%m-%d").date()
 
         new_drive = PlacementDrive(company_id = company_id, company_name = company_name,job_title = job_title, job_description = job_description, eligibility = Eligibility_criteria, deadline = Application_deadline)
         db.session.add(new_drive)

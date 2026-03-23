@@ -51,7 +51,7 @@ def login():
 @auth_bp.route('/logout')
 def logout():
     session.clear()
-    return render_template('auth.home')
+    return redirect(url_for('auth.home'))
 
 @auth_bp.route('/register/student', methods=['GET', 'POST'])
 def register_student():

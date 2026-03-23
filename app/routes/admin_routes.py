@@ -1,4 +1,5 @@
 from flask import Blueprint, redirect, render_template, url_for
+from app.models import application
 from app.models.company import CompanyProfile
 from .. import db
 from app.models.user import User
@@ -15,13 +16,18 @@ def admin_dashboard():
     companies = CompanyProfile.query.all()
     students = StudentProfile.query.all()
     pending_companies = CompanyProfile.query.filter_by(approval_status = 'Pending').all()
+    drives = PlacementDrive.query.filter_by(status = 'Active').all()
+    student_applications = Application.query.all()
+
     return render_template('admin/dashboard.html', 
                            total_companies = total_companies, 
                            total_students = total_students, 
                            pending_approval = pending_approval,
                            companies = companies,
                            students = students,
-                           pending_companies = pending_companies)
+                           pending_companies = pending_companies,
+                           drives = drives,
+                           student_applications = student_applications)
 
 
 @admin_bp.route('/admin/approve_company/<int:id>', methods = ['POST'])
@@ -70,30 +76,30 @@ def blacklist_student(id):
 
 @admin_bp.route('/admin/student_profile/<int:id>')
 def student_profile(id):
-    student = StudentProfile.query.get(id)
 
+    student = StudentProfile.query.get(id)
     if not student:
         return "User not found", 404
+
+    application = Application.query.filter_by(student_id=id).all()
     
-    return render_template('admin/student_profile.html', student = student)
+    return render_template('admin/student_profile.html', student = student, application = application)
 
 @admin_bp.route('/admin/drive_details/<int:id>')
 def drive_details(id):
     drive = PlacementDrive.query.get(id)
-
     if not drive:
         return "Drive not Found", 404
-    
     return render_template('admin/drive_details.html', drive = drive)
 
-@admin_bp.route('/admin/drive_completed/<int:id>', methods = ['POST'])
-def drive_completed(id):
-    drive = PlacementDrive.query.get(id)
+@admin_bp.route('/admin/drive_status/<int:drive_id>', methods = ['POST'])
+def drive_status(drive_id):
+    drive = PlacementDrive.query.get(drive_id)
 
     if not drive:
         return "Drive not Found", 404
     
-    drive.status = 'Completed'
+    drive.status = 'Closed'
     db.session.commit()
 
     return redirect(url_for('admin.admin_dashboard'))

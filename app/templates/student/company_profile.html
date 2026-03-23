@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Student Dashboard</title>
+    <style>
+        #form{
+            width: 400px;
+            height: 500px;
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+            <nav class="navbar bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-text-top">
+      Placement Portal
+      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-navbar-right">
+    </a>
+  </div>
+</nav>
+    <div id = "main" style=" height: 1100px;">
+        <div id = "canvas" style="height: 1100px;">
+            <nav class="navbar navbar-light mb-2" style="background-color: #6db2c7;">
+        <div class="container-fluid">
+        <a class="navbar-brand">{{ company_profile.company_name }}</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark">logout</a>
+        
+        </div>
+        </nav>
+        <div class="row mb-3">
+        
+            <div style="text-align: left; margin-bottom: 10px;">
+        <h3 style="display: inline; ">Organization Overview</h3>
+        </div>
+        <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;margin-bottom: 10px;">
+
+            {{ company_profile.company_description }}
+         </div>
+
+</div>        
+        <div style="text-align: left; margin-bottom: 10px; ">
+          <h3>Current Drives</h3>
+          <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;">
+            <table class="table text-center" style="border: 1px solid black;">
+              <thead>
+                <tr>
+                  <th scope="col">Drive ID</th>
+                  <th scope="col">Job Title</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+
+{% for drive in drive_info %}
+<tr>
+  <td>{{ drive.id }}</td>
+  <td>{{ drive.job_title }}</td>
+
+  <td>
+
+    <a href="{{ url_for('student.drive_details', drive_id=drive.id) }}" class="btn btn-outline-dark">
+    View Details
+    </a>
+
+  </td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+            </table>  
+          </div>
+        </div>
+        </div>        
+    </div>
+    
+</body>
+</html>

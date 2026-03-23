@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Drive Applications</title>
+</head>
+<body>
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Applications for {{ drive.job_title }}</h4>
+        <a href="{{ url_for('company.company_dashboard') }}" class="btn btn-dark btn-sm">Back</a>
+    </div>
+
+    <p><strong>Received Applications</strong></p>
+
+    <div style="border:1px solid black; max-height:300px; overflow-y:auto; padding:10px;">
+
+        {% for app in student_applications %}
+        <div class="d-flex justify-content-between align-items-center border p-2 mb-2">
+
+            <div>
+                {{ app.student_name }}
+                <br>
+                <small>Status: {{ app.status }}</small>
+            </div>
+
+            <div>
+                <a href="{{ url_for('company.student_application', application_id=app.id) }}" 
+                   class="btn btn-outline-primary btn-sm">
+                   Review Application
+                </a>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
