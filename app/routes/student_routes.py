@@ -27,6 +27,7 @@ def applications_history():
     student_profile = StudentProfile.query.filter_by(user_id=session['user_id']).first()
     student_id = student_profile.id    
     applications = Application.query.filter_by(student_id = student_id).all()
+
     return render_template('student/applications_history.html', applications = applications, Remark = "None", student_profile = student_profile, student_id = student_id)
 
 @student_bp.route('/student/drive_details/<int:drive_id>')
@@ -45,7 +46,7 @@ def apply(drive_id):
 
     if existing_application:
        flash("You have already applied to this drive!", "warning")
-       return redirect(url_for('student.drive_details', drive_id=drive_id))
+       return redirect(url_for('student.student_dashboard', drive_id=drive_id))
     new_application = Application(student_id = student_id, student_name = student_profile.student_name, drive_id = drive_id,)
     db.session.add(new_application)
     db.session.commit()

@@ -9,4 +9,5 @@ class Application(db.Model):
     drive_id = db.Column(db.Integer, db.ForeignKey("placement_drives.id"), nullable=False)
     status = db.Column(db.String(30), default="Waiting")  # Waiting, Shortlisted, Rejected
     applied_at = db.Column(db.DateTime, default=datetime.utcnow)
+    drive = db.relationship("PlacementDrive", backref="applications")
     __table_args__ = (db.UniqueConstraint("student_id", "drive_id", name="unique_application"),)

@@ -7,45 +7,54 @@
 </head>
 <body>
 
-    <nav id = "nav" class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}"  width="40" height="40" class="d-inline-block align-text-top">
-      Placement Portal
-      <img src="{{ url_for('static', filename='logo.png') }}"  width="40" height="40" class="d-inline-block align-navbar-right">
-    </a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
   </div>
 </nav>
-    <div id = "main">
-        <div id = "canvas">
 
-            <div class="container mt-4">
+<div class="container py-5">
+    <div class = "container align-items-center d-flex">
+        <div class = "card shadow-sm p-5" style = "max-width: 1200px; width: 100%;" >
+ 
+        <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+          <h4 class="fw-semibold">Student Profile</h4>
+          <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-outline-dark">Go Back</a>
+        </nav>
 
-    <h3>Student Application</h3>
-    <br>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Student Name:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ student.student_name }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Education:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ student.education }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Skills:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ student.skills }}</div>
+    </div>
 
-    <p><strong>Drive Id:</strong> {{ application.drive_id }}</p>
-    <p><strong>Student Name:</strong> {{ student.student_name }}</p>
-    <p><strong>Education:</strong> {{ student.education }}</p>
+  {% for app in application %}
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Drive Id({{ app.drive_id }}) </div>
+      <div class = "col-md-8 fw-semibold text-muted"> {{ app.status }}</div>
+    </div>
+  {% endfor %}
 
-    <br>
-
-    <!-- Resume Button -->
+  <div class = "d-flex justify-content-end">
     <a href="{{ url_for('static', filename=student.resume_path) }}" target="_blank" 
-       class="btn btn-primary btn-sm">
+       class="btn btn-outline-primary">
         View Resume
     </a>
-
-    <br><br>
-    <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-outline-dark">Back</a>
-
-
-
-    <br>
+  </div>
 
 </div>
-            </div>
-    </div>
+</div>
+</div>
 </body>
 </html>
 

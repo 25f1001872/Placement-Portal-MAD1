@@ -7,39 +7,66 @@
 </head>
 <body>
 
-    <nav id = "nav" class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}"  width="40" height="40" class="d-inline-block align-text-top">
-      Placement Portal
-      <img src="{{ url_for('static', filename='logo.png') }}"  width="40" height="40" class="d-inline-block align-navbar-right">
-    </a>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
   </div>
 </nav>
-    <div id = "main">
-        <div id = "canvas">
 
-            <div class="container mt-4">
+<div class="container py-5">
+    <div class = "container align-items-center d-flex">
+        <div class = "card shadow-sm p-5" style = "max-width: 1200px; width: 100%;" >
+        
+        <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+          <h4 class="fw-semibold">Drive Details</h4>
+          <a href="{{ url_for('student.student_dashboard') }}" class="btn btn-outline-dark">Go Back</a>
+        </nav>
 
-    <h3>Drive Details:</h3>
-    <br>
-
-    <p><strong>Drive Id:</strong> {{ drive.id }}</p>
-    <p><strong>Company Name:</strong> {{ drive.company_name }}</p>
-    <p><strong>Job Title:</strong> {{ drive.job_title }}</p>
-    <p><strong>Job Description:</strong> {{ drive.job_description }}</p>
-
-    <br>
-    <form action="{{ url_for('student.apply', drive_id=drive.id) }}" method="POST">
-      <button type="submit" class="btn btn-outline-dark">Apply Now</button>
-    </form>
-    <br>
-    <a href="{{ url_for('student.company_profile', company_id=drive.company_id) }}" class="btn btn-outline-dark">Go Back</a>
-
-    <br>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Drive ID:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.id }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Company Name:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.company_name }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Job Title:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.job_title }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Job Description:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.job_description }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Eligibility Criteria:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.eligibility }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Drive Status:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.status }}</div>
+    </div>
+    <div class="row mb-3">
+      <div class = "col-md-4 fw-bold">Drive Deadline:</div>
+      <div class = "col-md-8 fw-semibold text-muted">{{ drive.deadline }}</div>
+    </div>
+    <div class = "ms-auto mb-3">
+      {% if drive.status == 'Active' %}
+      <form action="{{ url_for('student.apply', drive_id=drive.id) }}" method="POST">
+        <button type="submit" class="btn btn-outline-success">
+          Apply
+        </button>
+      </form>
+      {% else %}
+      <span class="btn btn-danger disabled">Closed</span>
+      {% endif %}
+    </div>
 
 </div>
-            </div>
-    </div>
+</div>
+</div>
 </body>
 </html>

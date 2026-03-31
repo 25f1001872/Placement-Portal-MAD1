@@ -17,7 +17,7 @@ def admin_dashboard():
     students = StudentProfile.query.all()
     pending_companies = CompanyProfile.query.filter_by(approval_status = 'Pending').all()
     drives = PlacementDrive.query.filter_by(status = 'Active').all()
-    student_applications = Application.query.all()
+    student_applications = (Application.query.join(PlacementDrive).filter(PlacementDrive.status == "Active").all())
 
     return render_template('admin/dashboard.html', 
                            total_companies = total_companies, 

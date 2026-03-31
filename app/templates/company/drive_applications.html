@@ -5,41 +5,50 @@
     <title>Drive Applications</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
+  </div>
+</nav>
 
-<div class="container mt-4">
+<div class="container py-5">
+    <div class = "container align-items-center d-flex">
+        <div class = "card shadow-sm p-5" style = "max-width: 1200px; width: 100%;" >
 
-    <!-- HEADER -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Applications for {{ drive.job_title }}</h4>
-        <a href="{{ url_for('company.company_dashboard') }}" class="btn btn-dark btn-sm">Back</a>
-    </div>
+        <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+          <h4 class="fw-semibold">Applications for {{ drive.job_title }}</h4>
+          <a href="{{ url_for('company.company_dashboard') }}" class="btn btn-outline-dark">Go Back</a>
+        </nav>
 
-    <p><strong>Received Applications</strong></p>
+    <p><strong>Applications Received</strong></p>
 
-    <div style="border:1px solid black; max-height:300px; overflow-y:auto; padding:10px;">
+    <div class="border rounded p-3">
 
         {% for app in student_applications %}
-        <div class="d-flex justify-content-between align-items-center border p-2 mb-2">
+        <div class="row align-items-center border-bottom py-2">
 
-            <div>
-                {{ app.student_name }}
-                <br>
-                <small>Status: {{ app.status }}</small>
+            <div class="col-md-8">
+                <div class = "fw-semibold">{{ app.student_name }}</div>
+                <small class = "text-muted">Status: {{ app.status }}</small>
             </div>
 
-            <div>
+            <div class ="col-md-4 text-end">
                 <a href="{{ url_for('company.student_application', application_id=app.id) }}" 
-                   class="btn btn-outline-primary btn-sm">
+                   class="btn btn-outline-primary">
                    Review Application
                 </a>
             </div>
-
         </div>
         {% endfor %}
 
     </div>
 
-</div>
 
+</div>
+</div>
+</div>
 </body>
 </html>

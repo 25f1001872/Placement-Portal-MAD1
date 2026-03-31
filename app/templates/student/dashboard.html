@@ -4,93 +4,79 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
     <title>Student Dashboard</title>
-    <style>
-        #form{
-            width: 400px;
-            height: 500px;
-            margin-top: 100px;
-        }
-    </style>
 </head>
 <body>
-            <nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-text-top">
-      Placement Portal
-      <img src="/docs/5.3/assets/brand/bootstrap-logo.svg"  width="40" height="24" class="d-inline-block align-navbar-right">
-    </a>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
   </div>
 </nav>
-    <div id = "main" style=" height: 1100px;">
-        <div id = "canvas" style="height: 1100px;">
-            <nav class="navbar navbar-light mb-2" style="background-color: #6db2c7;">
-        <div class="container-fluid">
-        <a class="navbar-brand">Welcome {{ student_profile.student_name }}</a>
 
-        <a href="{{ url_for('student.applications_history') }}" class="btn btn-outline-dark">History</a>
-        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark">logout</a>
-        
-        </div>
-        </nav>
-        <div class="row mb-3">
-        
-            <div style="text-align: left; margin-bottom: 10px;">
-        <h3 style="display: inline; ">Organizations</h3>
-        </div>
-        <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;margin-bottom: 10px;">
+<div class = "container align-items-center d-flex justify-content-center">
+  <div class = "card shadow-sm p-5" style = "max-width: 1500px; width: 100%;" >
 
+    <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+      <h4 class="fw-semibold">Welcome {{ student_profile.student_name }}</h4>
+      <div class="d-flex justify-content-center gap-2">
+        <a href="{{ url_for('student.applications_history') }}" class="btn btn-outline-primary">History</a>
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark ">Logout</a>
+      </div>
+    </nav>
+
+        <div class="row mb-4">
+        <h4 class="fw-semibold mb-3">Organizations</h4>
+        <div class="border rounded p-3">
            {% for company in company_profile %}
-            <div style="border: black solid 1px; height: 70px; border-radius: 5px; margin-bottom: 3px; padding:5px;">
-
-              <b>{{ company.company_name }}</b>
-
-        <a href="{{ url_for('student.company_profile', company_id=company.id) }}" 
-           class="btn btn-outline-dark float-end">
-           View Details
-        </a>
-
+            <div class="row align-items-center border-bottom py-2">
+              <div class="col-md-8 fw-semibold">
+                {{ company.company_name }}
+              </div>
+              <div class="col-md-4 text-end">
+                 <a href="{{ url_for('student.company_profile', company_id=company.id) }}" 
+                   class="btn btn-outline-dark">
+                   View Details
+                 </a>
+              </div>
              </div>
            {% endfor %}
          </div>
-       </div>        
-        <div style="text-align: left; margin-bottom: 10px; ">
-          <h3>Applied Drives</h3>
-          <div style="border: black solid 1px; height: 150px; overflow-y: auto; padding: 3px;">
-            <table class="table text-center" style="border: 1px solid black;">
-              <thead>
-                <tr>
-                  <th scope="col">Drive ID</th>
-                  <th scope="col">Student Name</th>
-                  <th scope="col">Applied At</th>
-                  <th scope="col">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-
+       </div>    
+           
+<div class="row mb-4">
+  <h4 class="fw-semibold mb-3">Applied Drives</h4>
+  <div class="border rounded p-3">
+    <table class="table align-middle text-center">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Drive ID</th>
+          <th scope="col">Student Name</th>
+          <th scope="col">Applied At</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+<tbody>
 {% for drive in applied_drives %}
 <tr>
   <td>{{ drive.drive_id }}</td>
   <td>{{ drive.student_name }}</td>
   <td>{{ drive.applied_at }}</td>
-
   <td>
-
-    <a href="{{ url_for('student.drive_details', drive_id=drive.drive_id) }}" class="btn btn-outline-dark">
-    View Details
-    </a>
-
+      <a href="{{ url_for('student.drive_details', drive_id=drive.drive_id) }}" class="btn btn-outline-dark">
+      View Details
+      </a>
   </td>
-
 </tr>
 {% endfor %}
-
 </tbody>
-            </table>  
-          </div>
-        </div>
-        </div>        
-    </div>
-    
+</table>  
+</div>
+</div>
+
+</div>        
+</div>    
 </body>
 </html>

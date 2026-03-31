@@ -7,31 +7,33 @@
 </head>
 <body>
 
-<nav class="navbar bg-body-tertiary">
-  <div class="container-fluid">
-    <span class="navbar-brand">Placement Portal</span>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
   </div>
 </nav>
 
-<div class="container mt-4">
+<div class = "container align-items-center d-flex justify-content-center">
+  <div class = "card shadow-sm p-5" style = "max-width: 1500px; width: 100%;" >
 
-  <!-- HEADER -->
-  <div class="d-flex justify-content-between align-items-center mb-3 p-2 bg-info">
-    <h5>Welcome {{ company_profile.company_name }}</h5>
-    <a href="{{ url_for('auth.logout') }}" class="btn btn-dark btn-sm">Logout</a>
-  </div>
+    <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+      <h4 class="fw-semibold">Welcome {{ company_profile.company_name }}</h4>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark ">Logout</a>
+    </nav>
 
-  <!-- UPCOMING DRIVES -->
-  <div class="mb-4">
+<div class="table-responsive mb-2">
     <div class="d-flex justify-content-between">
       <h4>Upcoming Drives</h4>
-      <a href="{{ url_for('company.create_drive') }}" class="btn btn-success btn-sm">Create Drive</a>
+      <a href="{{ url_for('company.create_drive') }}" class="btn btn-outline-primary ">Create New Drive</a>
     </div>
 
-    <table class="table table-bordered text-center mt-2">
-      <thead>
+    <table class="table align-middle text-center">
+      <thead class="table-light">
         <tr>
-          <th>Sr No.</th>
+          <th>Drive Id</th>
           <th>Job Title</th>
           <th>Deadline</th>
           <th>Actions</th>
@@ -41,33 +43,28 @@
       <tbody>
         {% for drive in upcoming_drives %}
         <tr>
-          <td>{{ loop.index }}</td>
+          <td>{{ drive.id }}</td>
           <td>{{ drive.job_title }}</td>
           <td>{{ drive.deadline }}</td>
-
-          <td>
-            <a href="{{ url_for('company.drive_applications', drive_id=drive.id) }}" class="btn btn-primary btn-sm">
+          <td class="d-flex justify-content-center gap-2">
+            <a href="{{ url_for('company.drive_applications', drive_id=drive.id) }}" 
+              class="btn btn-outline-primary">
               View Details
             </a>
-
-            <form action="{{ url_for('company.drive_status', drive_id=drive.id) }}" method="POST" style="display:inline;">
-              <button class="btn btn-success btn-sm">Mark Complete</button>
+            <form action="{{ url_for('company.drive_status', drive_id=drive.id) }}" method="POST" >
+              <button class="btn btn-outline-success">Mark as Complete</button>
             </form>
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-  </div>
 
-  <!-- CLOSED DRIVES -->
-  <div>
     <h4>Closed Drives</h4>
-
-    <table class="table table-bordered text-center mt-2">
-      <thead>
+    <table class="table align-middle text-center">
+      <thead class="table-light">
         <tr>
-          <th>Sr No.</th>
+          <th>Drive Id</th>
           <th>Job Title</th>
           <th>Deadline</th>
           <th>Actions</th>
@@ -77,12 +74,11 @@
       <tbody>
         {% for drive in closed_drives %}
         <tr>
-          <td>{{ loop.index }}</td>
+          <td>{{ drive.id }}</td>
           <td>{{ drive.job_title }}</td>
           <td>{{ drive.deadline }}</td>
-
-          <td>
-            <a href="{{ url_for('company.drive_applications', drive_id=drive.id) }}" class="btn btn-dark btn-sm">
+          <td class="d-flex justify-content-center gap-2">
+            <a href="{{ url_for('company.drive_applications', drive_id=drive.id) }}" class="btn btn-outline-dark">
               View Details
             </a>
           </td>
@@ -90,9 +86,9 @@
         {% endfor %}
       </tbody>
     </table>
-  </div>
 
 </div>
-
+</div>
+</div>
 </body>
 </html>

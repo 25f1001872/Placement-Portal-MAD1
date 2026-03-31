@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Company Profile</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <span class="fw-semibold">Placement Portal</span>
+    </a>  
+  </div>
+</nav>
+
+<div class="container py-5">
+  <div class = "container align-items-center d-flex">
+    <div class = "card shadow-sm p-5" style = "max-width: 1200px; width: 100%;" >
+
+      <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
+        <h4 class="fw-semibold">Company Profile</h4>
+        <div class="d-flex gap-2">
+          <a href="{{ url_for('admin.admin_dashboard') }}" class="btn btn-outline-dark">Back</a>
+          <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark">logout</a>
+        </div>
+      </nav>   
+
+        <h4 class="mb-3">Organization Overview</h4>
+        <div class="mb-4">
+          <div class="fw-semibold">{{ company_profile.company_name }}</div>
+          <div class="text-muted">{{ company_profile.company_description }}</div>
+        </div>
+       
+  
+<h4 class="mb-4">Current Drives</h4>
+<div class="table-responsive mb-4">
+<table class="table align-middle text-center">
+  <thead class="table-light">
+    <tr>
+      <th scope="col">Drive ID</th>
+      <th scope="col">Job Title</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for drive in drive_info %}
+  <tr>
+    <td>{{ drive.id }}</td>
+    <td>{{ drive.job_title }}</td>
+
+  <td>
+    <a href="{{ url_for('student.drive_details', drive_id=drive.id) }}" 
+       class="btn btn-outline-dark">
+       View Details
+    </a>
+  </td>
+</tr>
+{% endfor %}
+
+  </tbody>
+</table>  
+</div>
+</div>        
+</div>
+
+</body>
+</html>
