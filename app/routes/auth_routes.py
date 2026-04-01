@@ -62,7 +62,10 @@ def register_student():
         name = request.form.get('name')
         email = request.form.get('email')
         password = request.form.get('password')
-        resume = request.form.get('resume')
+        education = request.form.get('education')
+        skills = request.form.get('skills')
+
+        resume = request.files.get('resume')
 
         existing_user = User.query.filter_by(email=email).first()
         if existing_user:
@@ -72,14 +75,16 @@ def register_student():
             new_user = User(name = name, email = email, password_hash = generate_password_hash(password), role = 'student')
             db.session.add(new_user)
             db.session.commit()
-            new_student_profile = StudentProfile(user_id = new_user.id, student_name = name, education = '', skills = '', resume_path = '')
+            new_student_profile = StudentProfile(user_id = new_user.id, student_name = name, education = education, skills = skills, resume_path = '')
             db.session.add(new_student_profile)
             db.session.commit()
 
             if resume:
                 new_filename = f"student_{new_student_profile.id}_resume.pdf"
-                resume_path = os.path.join('app', 'static', 'models', 'resumes', new_filename)
-                resume.save(resume_path)
+                upload_folder = os.path.join('app', 'static', 'uploads', 'resumes')
+                os.makedirs(upload_folder, exist_ok=True)
+                file_path = os.path.join(upload_folder, new_filename)
+                resume.save(file_path)
                 new_student_profile.resume_path = f"uploads/resumes/{new_filename}"
                 db.session.commit()
 

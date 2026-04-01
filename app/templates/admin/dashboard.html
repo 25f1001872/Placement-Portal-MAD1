@@ -13,6 +13,7 @@
     <a class="navbar-brand d-flex align-items-center gap-2" href="#">
       <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
       <span class="fw-semibold">Placement Portal</span>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark ">Logout</a>
     </a>  
   </div>
 </nav>
@@ -71,9 +72,10 @@
   <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-1">
     <span>{{ company.company_name }}</span>
 
-    <form method="POST" action="{{ url_for('admin.company_profile', id=companies[0].id) }}">  <!-- fix it later-->
-      <button class="btn btn-outline-primary btn-sm">View Profile</button>
-    </form>
+    <a href="{{ url_for('admin.company_profile', id=company.id) }}" 
+       class="btn btn-outline-primary btn-sm">
+       Profile
+    </a>
     <form method="POST" action="{{ url_for('admin.approve_company', id=company.id) }}">
       <button class="btn btn-outline-success btn-sm">Approve</button>
     </form>
