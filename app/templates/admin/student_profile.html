@@ -7,10 +7,10 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-white border-bottom">
+<nav class="navbar navbar-expand-lg  border-bottom" id="navbar">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <img src="{{ url_for('static', filename='logo.svg') }}" width="36" height="36">
       <span class="fw-semibold">Placement Portal</span>
     </a>  
   </div>
@@ -18,7 +18,7 @@
 
 <div class="container py-5">
     <div class = "container align-items-center d-flex">
-        <div class = "card shadow-sm p-5" style = "max-width: 1200px; width: 100%;" >
+        <div class = "card shadow-sm p-5"  id="main-card" style = "max-width: 1200px; width: 100%;" >
  
         <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
           <h4 class="fw-semibold">Student Profile</h4>
@@ -46,10 +46,17 @@
   {% endfor %}
 
   <div class = "d-flex justify-content-end">
-    <a href="{{ url_for('static', filename=student.resume_path) }}" target="_blank" 
-       class="btn btn-outline-primary">
+
+      {% if student.is_blacklisted %}
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-dark btn-sm" disabled>Blacklisted</button>
+      </div>
+      {% else %}
+      <a href="{{ url_for('static', filename=student.resume_path) }}" target="_blank" 
+        class="btn btn-outline-primary">
         View Resume
-    </a>
+      </a>
+      {% endif %}
   </div>
 
 </div>

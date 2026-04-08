@@ -7,17 +7,24 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg bg-white border-bottom">
+<nav class="navbar navbar-expand-lg  border-bottom" id="navbar">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <img src="{{ url_for('static', filename='logo.svg') }}" width="36" height="36">
       <span class="fw-semibold">Placement Portal</span>
     </a>
+
+    <div class="ms-auto">
+      <a href="{{ url_for('auth.home') }}" class="btn btn-outline-dark btn-sm">
+        Home
+      </a>
+    </div>
+
   </div>
 </nav>
 
 <div class = "container align-items-center d-flex justify-content-center" style = "min-height: 85vh;">
-    <div class = "card shadow-sm p-5" style = "max-width: 600px; width: 100%;">
+    <div class = "card shadow-sm p-5" id="main-card"  style = "max-width: 600px; width: 100%;">
       <h3 class = "text-center mb-4">Student Registration</h3>
       <form method="POST" action="{{ url_for('auth.register_student') }}" enctype="multipart/form-data">
         <div class="mb-3">

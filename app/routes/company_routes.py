@@ -13,6 +13,8 @@ company_bp = Blueprint('company', __name__)
 @company_bp.route('/company/dashboard')
 def company_dashboard():
     company_profile = CompanyProfile.query.filter_by(user_id = session['user_id']).first()
+    if company_profile.is_blacklisted == True:
+         return "Your Company has been blacklisted by admin. Please contact support for more information."
     company_id = company_profile.id
     upcoming_drives = PlacementDrive.query.filter_by(company_id = company_id, status = 'Active').all()
     closed_drives = PlacementDrive.query.filter_by(company_id = company_id, status = 'Closed').all()
@@ -22,6 +24,8 @@ def company_dashboard():
 def drive_applications(drive_id):
 
     company_profile = CompanyProfile.query.filter_by(user_id = session['user_id']).first()
+    if company_profile.is_blacklisted == True:
+         return "Your Company has been blacklisted by admin. Please contact support for more information."
     drive = PlacementDrive.query.get(drive_id)
     if drive.company_id != company_profile.id:
          return "unauthorised access", 403

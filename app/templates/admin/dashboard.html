@@ -8,10 +8,10 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg bg-white border-bottom">
+<nav class="navbar navbar-expand-lg  border-bottom" id="navbar">
   <div class="container">
     <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-      <img src="{{ url_for('static', filename='logo.png') }}" width="36" height="36">
+      <img src="{{ url_for('static', filename='logo.svg') }}" width="36" height="36">
       <span class="fw-semibold">Placement Portal</span>
       <a href="{{ url_for('auth.logout') }}" class="btn btn-outline-dark ">Logout</a>
     </a>  
@@ -19,13 +19,13 @@
 </nav>
 
 <div class = "container align-items-center d-flex justify-content-center">
-  <div class = "card shadow-sm p-5" style = "max-width: 1500px; width: 100%;" >
+  <div class = "card shadow-sm p-5" id="main-card" style = "max-width: 1500px; width: 100%;" >
     
     <nav class="navbar navbar-light bg-light rounded mb-4 px-3">
       <span class="fw-semibold">Welcome Admin</span>
 
-      <form class="d-flex ms-auto">
-        <input class="form-control me-2" type="search" placeholder="Student ID, Organization ID..." style="width: 250px;">
+      <form class="d-flex ms-auto" action="{{ url_for('admin.search')}}">
+        <input class="form-control me-2" type="search" name = "id" placeholder="User ID..." style="width: 250px;">
         <button class="btn btn-outline-primary">Search</button>
       </form>
     </nav>
@@ -47,7 +47,11 @@
     <span>{{ company.company_name }}</span>
 
     <form method="POST" action="{{ url_for('admin.blacklist_company', id=company.id) }}">
-      <button class="btn btn-outline-danger btn-sm">Blacklist</button>
+      {% if company.is_blacklisted %}
+        <button class="btn btn-dark btn-sm" disabled>Blacklisted</button>
+      {% else %}
+        <button class="btn btn-outline-danger btn-sm">Blacklist</button>
+      {% endif %}
     </form>
   </div>
   {% endfor %}
@@ -60,7 +64,11 @@
     <span>{{ student.student_name }}</span>
 
     <form method="POST" action="{{ url_for('admin.blacklist_student', id=student.id) }}">
-      <button class="btn btn-outline-danger btn-sm">Blacklist</button>
+      {% if student.is_blacklisted %}
+        <button class="btn btn-dark btn-sm" disabled>Blacklisted</button>
+      {% else %}
+        <button class="btn btn-outline-danger btn-sm">Blacklist</button>
+      {% endif %}
     </form>
   </div>
   {% endfor %}

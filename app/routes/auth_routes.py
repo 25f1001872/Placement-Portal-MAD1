@@ -14,7 +14,6 @@ auth_bp = Blueprint('auth', __name__)
 def home():
     return render_template('home.html')
 
-
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':

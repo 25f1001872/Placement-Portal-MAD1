@@ -10,6 +10,8 @@ student_bp = Blueprint('student', __name__)
 @student_bp.route('/student/dashboard')
 def student_dashboard():
     student_profile = StudentProfile.query.filter_by(user_id=session['user_id']).first()
+    if student_profile.is_blacklisted == True:
+        return "Your profile has been blacklisted by admin. Please contact support for more information."
     student_id = student_profile.id
     student_name = student_profile.student_name
     company_profile = CompanyProfile.query.filter_by(approval_status = 'Approved', is_blacklisted = False).all()

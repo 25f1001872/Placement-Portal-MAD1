@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 from app.models import application
 from app.models.company import CompanyProfile
 from .. import db
@@ -29,6 +29,25 @@ def admin_dashboard():
                            drives = drives,
                            student_applications = student_applications)
 
+@admin_bp.route('/admin/search', methods = ['GET'])
+def search():
+    id = request.args.get('id')
+    user = User.query.filter_by(id=id).first()
+
+    if not user:
+        return "User not found", 404
+
+    if user.role == 'company':
+        company = CompanyProfile.query.filter_by(user_id=user.id).first()
+        if company:
+            return redirect(url_for('admin.company_profile', id=company.id))
+
+    elif user.role == 'student':
+        student = StudentProfile.query.filter_by(user_id=user.id).first()
+        if student:
+            return redirect(url_for('admin.student_profile', id=student.id))
+
+    return "Profile not found", 404
 
 @admin_bp.route('/admin/approve_company/<int:id>', methods = ['POST'])
 def approve_company(id):
