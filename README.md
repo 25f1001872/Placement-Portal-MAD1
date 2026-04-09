@@ -347,6 +347,15 @@ The Admin account is automatically created on the first run inside the app facto
 
 ---
 
+## 🎥 Video Demo
+
+Watch the full working demo of the project here:
+
+🔗 **[Placement Portal Demo Video](https://drive.google.com/file/d/1PopTY_GMj0MgOzLSvNAYr7LunKf9jbIS/view)**
+
+> This video demonstrates the Admin, Company, and Student dashboards, along with the full placement drive workflow.
+
+---
 
 ## 📈 Future Improvements
 
