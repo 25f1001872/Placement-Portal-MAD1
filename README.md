@@ -5,7 +5,7 @@
 <br>
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-2.x-000000?style=for-the-badge&logo=flask&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-3.x-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?style=for-the-badge&logo=sqlite&logoColor=white)
 ![Bootstrap](https://img.shields.io/badge/Bootstrap-5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
 ![License](https://img.shields.io/badge/License-Academic%20Use-green?style=for-the-badge)
@@ -323,7 +323,7 @@ The Admin account is automatically created on the first run inside the app facto
 ### 🏛️ Admin Dashboard
 <!-- Add screenshot here -->
 ```
-![Admin Dashboard](app/static/admin_dashboard.png)
+![Admin Dashboard](images/admin_dashboard.png)
 ```
 > Displays system-wide stats: total students, companies, drives, and applications — with approval and blacklist management tools.
 

@@ -116,6 +116,4 @@ def register_company():
             company = CompanyProfile.query.filter_by(user_id = new_user.id).first()
             if company.approval_status == 'Pending':
                 return render_template('login.html', message = 'Registered Succesfully, Pending approval at admin.')
-            elif company.approval_status == 'Rejected':
-                return render_template('register_company.html', message = 'Your registration was rejected by admin.')
             return render_template('login.html', message = 'Registration successful. Please login.') 

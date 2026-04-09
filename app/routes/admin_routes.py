@@ -13,7 +13,7 @@ def admin_dashboard():
     total_companies = User.query.filter_by(role = 'company').count()
     total_students = User.query.filter_by(role = 'student').count()
     pending_approval = CompanyProfile.query.filter_by(approval_status = 'Pending').count()
-    companies = CompanyProfile.query.all()
+    companies = CompanyProfile.query.filter_by(approval_status = 'Approved').all()
     students = StudentProfile.query.all()
     pending_companies = CompanyProfile.query.filter_by(approval_status = 'Pending').all()
     drives = PlacementDrive.query.filter_by(status = 'Active').all()
